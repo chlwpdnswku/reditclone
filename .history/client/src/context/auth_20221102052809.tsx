@@ -1,0 +1,3 @@
+interface State {
+  authenticated: boolean;
+}

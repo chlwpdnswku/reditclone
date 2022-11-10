@@ -1,0 +1,44 @@
+import { throws } from 'assert';
+import { IsEmail, Length } from 'class-validator';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  Index,
+  OneToMany,
+  BeforeInsert,
+} from 'typeorm';
+import bcrypt from 'bcryptjs';
+import Post from './Post';
+// 이름을 넣어주고
+@Entity('users')
+export class User {
+  // id는 base entity에다가 넣어줌
+
+  @Index()
+  @IsEmail(undefined, { message: '이메일 주소가 잘못됨' })
+  @Length(1, 255, { message: '이메일 주소는 비워둘 수 없다' })
+  @Column({ unique: true })
+  email: string;
+  @Index()
+  @Length(3, 32, { message: '사용자이름은 3자 이상이어야 합니다' })
+  @Column()
+  username: string;
+
+  @Column()
+  @Length(6, 255, { message: '비밀번호는 5자리 이상이어야 합니다' })
+  password: string;
+
+  @OneToMany(() => Post, (post) => post.user)
+  posts: Post[];
+
+  // 1.타입 2.엔티티안에 칼럼지정
+  @OneToMany(() => Vote, (vote) => vote.user)
+  votes: Vote[];
+
+  //평문 암호화
+  @BeforeInsert()
+  async hashPassword() {
+    this.password = await bcrypt.hash(this.password, 6);
+  }
+}

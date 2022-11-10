@@ -1,0 +1,14 @@
+version: '3'
+services:
+  db:
+    image: postgres:latest
+    contanier_name: 'postgres'
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: '${DB_USER_ID}'
+      POSTGRES_PASSWOD: '${DB_USER_PASSWORD}'
+      # 컨테이너를 실행하는데에 있어서 데이터 폴더를 냅둠
+    volumes:
+      - ./data:/var/lib/postgresql/
