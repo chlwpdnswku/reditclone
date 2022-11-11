@@ -9,7 +9,7 @@ import cookieParser from 'cookie-parser';
 const app = express();
 
 // 미들웨어들을 하나씩 넣어주는거임 !
-//깃ㅓㅡ변ㅕㅇ내용redit
+//
 const origin = 'http://localhost:3000';
 app.use(
   cors({
